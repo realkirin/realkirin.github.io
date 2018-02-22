@@ -1,5 +1,5 @@
 import * as firebase from 'firebase'
-import { firebaseMutations, firebaseActions } from 'vuexfire'
+import { firebaseMutations, firebaseAction } from 'vuexfire'
 
 export default {
   state: {

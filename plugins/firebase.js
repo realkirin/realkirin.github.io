@@ -15,6 +15,7 @@ if (!firebase.apps.length) {
 
 export default (context) => {
   const {store} = context
+  store.dispatch('setPostsRef', dbPostsRef) 
 
   return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged(user => {
@@ -23,3 +24,7 @@ export default (context) => {
     })
   })
 }
+
+const db = firebase.database()
+export const dbPostsRef = db.ref('posts')
+//store.dispatch('setPostsRef', dbPostsRef) // will bind our store to firebase, calls setMenuRef action in the menu store

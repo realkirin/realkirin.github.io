@@ -7,6 +7,7 @@ import { firebaseMutations } from 'vuexfire'
 
 const store = () => {
   return new Vuex.Store({
+    mutations: {...firebaseMutations },
     modules: {
       user: user,
       shared: shared,
