@@ -2,12 +2,12 @@
   <v-layout>
     <h1 v-if="user === null">Login</h1>
     <h1 v-else>Logged in as {{ user.displayName }}</h1>
-    <app-signin></app-signin>
+    <app-signup></app-signup>
   </v-layout>
 </template>
 
 <script>
-  import Signin from "../components/Signin"
+  import Signup from "../components/Signup"
 
   export default {
     middleware: ["loginRedirect"],
@@ -16,8 +16,15 @@
         return this.$store.getters.user
       }
     },
+    watch: {
+      user(value) {
+        if (value !== null && value !== undefined) {
+          this.$router.push("/profile")
+        }
+      }
+    },
     components: {
-      appSignin: Signin
+      appSignup: Signup
     }
   }
 

@@ -1,35 +1,50 @@
 <template>
-  <div class="row">
-    <div class="col-sm-12 col-md-6">
-      <div v-for="post in getPosts" :key="post['.key']">
-        <h3>{{ post.title }}</h3>
-        <p>{{ post.body }}</p>
-        <button class="btn btn-outline-danger btn-sm" 
-                  @click="removePost(post['.key'])">x</button>
-      </div>
-    </div>
-  </div>
+  <v-layout>
+    <v-list three-line>
+      <v-layout v-for="post in getPosts" :key="post['.key']">
+        <!-- will show delete button on left if logged in user uid equals the user uid who made the post -->
+        <v-subheader v-if="user && post.uid === user.uid">
+          <v-btn @click="removePost(post['.key'])">x</v-btn>
+        </v-subheader>
+        <v-divider></v-divider>
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile-title v-html="post.title"></v-list-tile-title>
+            <v-list-tile-sub-title v-html="post.body"></v-list-tile-sub-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-layout>
+    </v-list>
+  </v-layout>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { dbPostsRef } from '../plugins/firebase.js'
+  import {
+    mapGetters
+  } from 'vuex'
+  import {
+    dbPostsRef
+  } from '../plugins/firebase.js'
 
-export default {
-  data() {
-    return {
-      posts: []
-    };
-  },
-  computed: {
-    ...mapGetters ([
-      'getPosts'
-    ]),
-  },
-  methods: {
-    removePost(key) {
-      dbPostsRef.child(key).remove()
+  export default {
+    data() {
+      return {
+        posts: []
+      };
+    },
+    computed: {
+      ...mapGetters([
+        'getPosts'
+      ]),
+      user() {
+        return this.$store.getters.user
+      }
+    },
+    methods: {
+      removePost(key) {
+        dbPostsRef.child(key).remove()
+      }
     }
   }
-}
+
 </script>

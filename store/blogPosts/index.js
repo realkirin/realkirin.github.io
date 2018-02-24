@@ -1,4 +1,6 @@
-import { firebaseAction } from 'vuexfire'
+import {
+  firebaseAction
+} from 'vuexfire'
 
 const state = {
   posts: []
@@ -13,7 +15,11 @@ const mutations = {
 }
 
 const actions = {
-  setPostsRef: firebaseAction(({ bindFirebaseRef }, { ref }) => {
+  setPostsRef: firebaseAction(({
+    bindFirebaseRef
+  }, {
+    ref
+  }) => {
     bindFirebaseRef('posts', ref)
   })
 }

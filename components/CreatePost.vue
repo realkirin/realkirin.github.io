@@ -1,47 +1,53 @@
 <template>
-  <v-layout>
-    
-  </v-layout>
-</template>
-
-<template>
-  <form>
-    <h3>Make a new post:</h3>
-    <div class="form-group row">
-      <label class="col-sm-3">Name</label>
-      <div class="col-sm-9">
-        <input type="text" class="form-control" v-model="newPost.title">
+  <v-card tile="true">
+    <v-form>
+      <div>
+        <div>
+          <v-text-field name="title" label="Title" v-model="newPost.title"></v-text-field>
+        </div>
       </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-sm-3">Description</label>
-      <div class="col-sm-9">
-        <textarea type="text" class="form-control" rows="5" v-model="newPost.body"></textarea>
+      <div>
+        <div>
+          <v-text-field name="description" label="Description" multi-line v-model="newPost.body"></v-text-field>
+        </div>
       </div>
-    </div>
-    <div class="form-group row">
-      <button type="button" class="btn btn-success btn-block" @click="addNewPost">Add</button>
-    </div>
-  </form>
+      <div>
+        <v-btn @click.prevent="addNewPost">Add</v-btn>
+      </div>
+    </v-form>
+  </v-card>
 </template>
 
 <script>
-import { dbPostsRef } from '../plugins/firebase.js'
+  import {
+    dbPostsRef
+  } from '../plugins/firebase.js'
 
-export default {
-  data() {
-    return {
-      newPost: {
-        title: "Eg. Margherita",
-        body: "Eg. A delicious tomato based pizza topped with mozzarella"
+  export default {
+    middleware: ["userAuthed"],
+    data() {
+      return {
+        newPost: {
+          title: null,
+          body: null
+        }
+      };
+    },
+    methods: {
+      addNewPost() {
+        // will push the data from the form to the firebase database
+        dbPostsRef.push({
+          title: this.newPost.title,
+          body: this.newPost.body,
+          uid: this.user.uid
+        })
       }
-    };
-  },
-  methods: {
-    addNewPost() {
-      // will push the data from the form to the firebase database
-      dbPostsRef.push(this.newPost);
+    },
+    computed: {
+      user() {
+        return this.$store.getters.user
+      }
     }
   }
-}
+
 </script>

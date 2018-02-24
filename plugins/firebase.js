@@ -9,13 +9,14 @@ if (!firebase.apps.length) {
     projectId: 'react-firebase-starter-c28c7',
     storageBucket: 'react-firebase-starter-c28c7.appspot.com',
     messagingSenderId: '271307299986'
-    }
-  )
+  })
 }
 
 export default (context) => {
-  const {store} = context
-  store.dispatch('setPostsRef', dbPostsRef) 
+  const {
+    store
+  } = context
+  store.dispatch('setPostsRef', dbPostsRef)
 
   return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged(user => {
