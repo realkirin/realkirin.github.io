@@ -8,7 +8,6 @@
 
 <script>
   import Signin from "../components/Signin"
-
   export default {
     middleware: ["loginRedirect"],
     computed: {
