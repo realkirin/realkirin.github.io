@@ -5,7 +5,6 @@
         <v-card>
           <v-card-title primary-title>
             <div class="text-md-center" v-if="user">
-              <h2>Login Success</h2>
               <h4 class="headline mb-0">{{ user.name }}</h4>
               <h4 class="headline mb-0">{{ user.email }}</h4>
             </div>
