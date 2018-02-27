@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <v-list three-line>
-      <!-- loop through each user within posts collection -->
+      <!-- loop through each user within posts collection (through our vuex store binded to firebase) -->
       <div v-for="userPosts in getPosts" :key="userPosts['.key']">
         <!-- loop through each of their posts -->
         <v-layout v-for="(post,key) in userPosts" :key="post['key']">
@@ -9,9 +9,12 @@
           <v-subheader v-if="user && post.uid === user.uid">
             <v-btn @click="removePost(key)">x</v-btn>
           </v-subheader>
+
+          <!-- edit button -->
           <v-subheader v-if="user && post.uid === user.uid">
             <v-btn @click="updatePost(key, post.title, post.body)">edit</v-btn>
           </v-subheader>
+
           <v-divider></v-divider>
           <v-list-tile>
             <v-list-tile-content>
@@ -22,8 +25,8 @@
         </v-layout>
         <v-layout>
           <v-flex xs12>
-            <div v-if="postUpdateKey !== null">
-              <app-update-post :postkey="postUpdateKey" :currTitle="postUpdateTitle" :currBody="postUpdateBody"></app-update-post>
+            <div v-if="getUpdatePostKey !== null">
+              <app-update-post ></app-update-post>
             </div>
           </v-flex>
         </v-layout>
@@ -33,7 +36,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapMutations } from 'vuex'
   import { db } from '../plugins/firebase.js'
   import UpdatePost from './UpdatePost'
 
@@ -44,22 +47,24 @@
     data() {
       return {
         posts: [],
-        postUpdateKey: null,
-        postUpdateTitle: null,
-        postUpdateBody: null
       };
     },
     computed: {
-      // map getPosts from post store
       ...mapGetters([
-        'getPosts'
+        'getUpdatePostKey',
+        'getUpdatePostTitle',
+        'getUpdatePostBody',
+        'getPosts', // gets binded vuex post from firebase
+        'user' // get current user
       ]),
-      // get current user from store
-      user() {
-        return this.$store.getters.user
-      }
+
     },
     methods: {
+      ...mapMutations([
+        'setUpdatePostKey', // map `this.setUpdatePostKey()` to `this.$store.commit('setUpdatePostKey')`
+        'setUpdatePostTitle',
+        'setUpdatePostBody'
+      ]),
       removePost(key) {
         // create reference to posts collection
         let postsDBRef = db.ref('posts')
@@ -67,10 +72,12 @@
         let userPostRef = postsDBRef.child(this.user.uid);
         userPostRef.child(key).remove()
       },
-      updatePost(key, body, title) {
-        this.postUpdateKey = key;
-        this.postUpdateTitle = title;
-        this.postUpdateBody = body;
+      updatePost(key, title, body){
+        // when user clicks edit, it sets the firebase key of the post to UpdatePostKey in the store
+        this.setUpdatePostKey(key);
+        this.setUpdatePostTitle(title);
+        this.setUpdatePostBody(body);
+        console.log(this.getUpdatePostKey, this.getUpdatePostTitle, this.getUpdatePostBody);
       }
     }
   }

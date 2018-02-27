@@ -9,9 +9,6 @@
       <div>
         <div>
           <v-text-field name="description" label="Description" multi-line v-model="postContent.body"></v-text-field>
-          {{postkey}}
-          {{ currTitle}}
-          {{ currBody }}
         </div>
       </div>
       <div>
@@ -22,30 +19,33 @@
 </template>
 
 <script>
-  import {
-    db
-  } from '../plugins/firebase.js'
+  import { db } from '../plugins/firebase.js'
   import moment from 'moment'
+  import { mapGetters, mapMutations } from 'vuex'
 
   export default {
     mounted: function() {
-      // once the component has mount set post content from props to postContent data property
-      this.postContent.title = this.currTitle
-      this.postContent.body = this.currBody
-      this.postContent.postkey = this.postkey
+      console.log(this.getUpdatePost)
+      this.postContent.key = this.getUpdatePostKey;
+      this.postContent.title = this.getUpdatePostTitle;
+      this.postContent.body = this.getUpdatePostBody;
     },
     middleware: ["userAuthed"],
-    props: ['postkey', 'currTitle', 'currBody'],
     data() {
       return {
         postContent: {
+          key: null,
           title: null,
-          body: null,
-          postkey: null
+          body: null
         }
       };
     },
     methods: {
+      ...mapMutations([
+        'setUpdatePostKey', // map `this.setUpdatePostKey()` to `this.$store.commit('setUpdatePostKey')`
+        'setUpdatePostTitle',
+        'setUpdatePostBody'
+      ]),
       updatePost() {
         // create reference to posts collection
         let postsDBRef = db.ref('posts')
@@ -56,22 +56,33 @@
         let currDateTime = moment().toISOString()
 
         // get user post you want to update and push content
-        userPostRef.child('/' + this.postkey).update({
+        userPostRef.child('/' + this.postContent.key).update({
           title: this.postContent.title,
           body: this.postContent.body,
           updatedDateTime: currDateTime
         })
 
         // clear form data after post
-        this.postContent.title = "";
-        this.postContent.body = ""
+        this.postContent.title = null;
+        this.postContent.body = null;
+        this.postContent.key = null;
+
+        //clear update data in store
+        this.setUpdatePostKey = null
+        this.setUpdatePostTitle = null
+        this.setUpdatePostBody = null
+
+
       }
     },
     computed: {
-      user() {
-        // get user from store
-        return this.$store.getters.user
-      }
+      ...mapGetters([
+        'getPosts',
+        'getUpdatePostKey',
+        'getUpdatePostTitle',
+        'getUpdatePostBody',
+        'user'
+      ])
     }
   }
 
