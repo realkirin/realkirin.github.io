@@ -9,6 +9,9 @@
           <v-subheader v-if="user && post.uid === user.uid">
             <v-btn @click="removePost(key)">x</v-btn>
           </v-subheader>
+          <v-subheader v-if="user && post.uid === user.uid">
+            <v-btn @click="updatePost(key, post.title, post.body)">edit</v-btn>
+          </v-subheader>
           <v-divider></v-divider>
           <v-list-tile>
             <v-list-tile-content>
@@ -17,23 +20,33 @@
             </v-list-tile-content>
           </v-list-tile>
         </v-layout>
+        <v-layout>
+          <v-flex xs12>
+            <div v-if="postUpdateKey !== null">
+              <app-update-post :postkey="postUpdateKey" :currTitle="postUpdateTitle" :currBody="postUpdateBody"></app-update-post>
+            </div>
+          </v-flex>
+        </v-layout>
       </div>
     </v-list>
   </v-layout>
 </template>
 
 <script>
-  import {
-    mapGetters
-  } from 'vuex'
-  import {
-    db
-  } from '../plugins/firebase.js'
+  import { mapGetters } from 'vuex'
+  import { db } from '../plugins/firebase.js'
+  import UpdatePost from './UpdatePost'
 
   export default {
+    components: {
+      appUpdatePost: UpdatePost
+    },
     data() {
       return {
-        posts: []
+        posts: [],
+        postUpdateKey: null,
+        postUpdateTitle: null,
+        postUpdateBody: null
       };
     },
     computed: {
@@ -53,6 +66,11 @@
         // create reference to each user within posts
         let userPostRef = postsDBRef.child(this.user.uid);
         userPostRef.child(key).remove()
+      },
+      updatePost(key, body, title) {
+        this.postUpdateKey = key;
+        this.postUpdateTitle = title;
+        this.postUpdateBody = body;
       }
     }
   }

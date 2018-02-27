@@ -36,14 +36,14 @@
     methods: {
       addNewPost() {
         // get the current date and time
-        let currDatetime = moment().toISOString()
+        let currDateTime = moment().toISOString()
         // push to firebase under the current users posts
         db.ref('/posts/' + this.user.uid).push({
           title: this.newPost.title,
           body: this.newPost.body,
           uid: this.user.uid,
           votes: 0,
-          dateTime: currDatetime,
+          dateTime: currDateTime,
           comments: []
         })
 

@@ -3,16 +3,19 @@
     <v-form>
       <div>
         <div>
-          <v-text-field name="title" label="Title" v-model="newPost.title"></v-text-field>
+          <v-text-field name="title" label="Title" v-model="postContent.title"></v-text-field>
         </div>
       </div>
       <div>
         <div>
-          <v-text-field name="description" label="Description" multi-line v-model="newPost.body"></v-text-field>
+          <v-text-field name="description" label="Description" multi-line v-model="postContent.body"></v-text-field>
+          {{postkey}}
+          {{ currTitle}}
+          {{ currBody }}
         </div>
       </div>
       <div>
-        <v-btn @click.prevent="addNewPost">Add</v-btn>
+        <v-btn @click.prevent="updatePost">Update</v-btn>
       </div>
     </v-form>
   </v-card>
@@ -23,36 +26,45 @@
     db
   } from '../plugins/firebase.js'
   import moment from 'moment'
+
   export default {
-    middleware: ["userAuthed"],
-    props: {
-      postKey: String
+    mounted: function() {
+      // once the component has mount set post content from props to postContent data property
+      this.postContent.title = this.currTitle
+      this.postContent.body = this.currBody
+      this.postContent.postkey = this.postkey
     },
+    middleware: ["userAuthed"],
+    props: ['postkey', 'currTitle', 'currBody'],
     data() {
       return {
-        newPost: {
+        postContent: {
           title: null,
-          body: null
+          body: null,
+          postkey: null
         }
       };
     },
     methods: {
-      addNewPost() {
-        // get the current date and time
-        let currDatetime = moment().toISOString()
-        // push to firebase under the current users posts
-        db.ref('/posts/' + this.user.uid).push({
-          title: this.newPost.title,
-          body: this.newPost.body,
-          uid: this.user.uid,
-          votes: 0,
-          dateTime: currDatetime,
-          comments: []
+      updatePost() {
+        // create reference to posts collection
+        let postsDBRef = db.ref('posts')
+        // create reference to each user within posts
+        let userPostRef = postsDBRef.child(this.user.uid)
+
+        // get current Datetime
+        let currDateTime = moment().toISOString()
+
+        // get user post you want to update and push content
+        userPostRef.child('/' + this.postkey).update({
+          title: this.postContent.title,
+          body: this.postContent.body,
+          updatedDateTime: currDateTime
         })
 
         // clear form data after post
-        this.newPost.title = "";
-        this.newPost.body = ""
+        this.postContent.title = "";
+        this.postContent.body = ""
       }
     },
     computed: {
