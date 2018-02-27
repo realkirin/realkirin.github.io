@@ -25,6 +25,9 @@
   import moment from 'moment'
   export default {
     middleware: ["userAuthed"],
+    props: {
+      postKey: String
+    },
     data() {
       return {
         newPost: {

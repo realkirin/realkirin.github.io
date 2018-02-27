@@ -14,6 +14,7 @@
 </template>
 
 <script>
+  // basic admin page, will only display if user is authenticated
   export default {
     middleware: ["userAuthed"],
     methods: {

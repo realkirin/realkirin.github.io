@@ -22,6 +22,7 @@
   export default {
     middleware: ["userAuthed"],
     computed: {
+      // get current user
       user() {
         return this.$store.getters.user
       }

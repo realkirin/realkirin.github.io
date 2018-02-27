@@ -2,6 +2,8 @@ import {
   firebaseAction
 } from 'vuexfire'
 
+import user from '../user'
+
 const state = {
   posts: []
 }

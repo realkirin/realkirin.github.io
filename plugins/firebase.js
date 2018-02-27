@@ -19,6 +19,6 @@ export default (context) => {
   })
 }
 
-const db = firebase.database()
+export const db = firebase.database()
 export const dbPostsRef = db.ref('posts')
 /* store.dispatch('setPostsRef', dbPostsRef) // will bind our store to firebase, calls setMenuRef action in the menu store */
