@@ -25,7 +25,7 @@
         </v-layout>
         <v-layout>
           <v-flex xs12>
-            <div v-if="getUpdatePostKey !== null">
+            <div v-if="getUpdatePost.key !== null">
               <app-update-post ></app-update-post>
             </div>
           </v-flex>
@@ -51,9 +51,7 @@
     },
     computed: {
       ...mapGetters([
-        'getUpdatePostKey',
-        'getUpdatePostTitle',
-        'getUpdatePostBody',
+        'getUpdatePost',
         'getPosts', // gets binded vuex post from firebase
         'user' // get current user
       ]),
@@ -61,9 +59,7 @@
     },
     methods: {
       ...mapMutations([
-        'setUpdatePostKey', // map `this.setUpdatePostKey()` to `this.$store.commit('setUpdatePostKey')`
-        'setUpdatePostTitle',
-        'setUpdatePostBody'
+        'setUpdatePost', // map `this.setUpdatePostKey()` to `this.$store.commit('setUpdatePostKey')`
       ]),
       removePost(key) {
         // create reference to posts collection
@@ -74,10 +70,7 @@
       },
       updatePost(key, title, body){
         // when user clicks edit, it sets the firebase key of the post to UpdatePostKey in the store
-        this.setUpdatePostKey(key);
-        this.setUpdatePostTitle(title);
-        this.setUpdatePostBody(body);
-        console.log(this.getUpdatePostKey, this.getUpdatePostTitle, this.getUpdatePostBody);
+        this.setUpdatePost({key: key, title: title, body: body})
       }
     }
   }

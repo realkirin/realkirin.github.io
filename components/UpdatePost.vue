@@ -26,9 +26,9 @@
   export default {
     mounted: function() {
       console.log(this.getUpdatePost)
-      this.postContent.key = this.getUpdatePostKey;
-      this.postContent.title = this.getUpdatePostTitle;
-      this.postContent.body = this.getUpdatePostBody;
+      this.postContent.key = this.getUpdatePost.key;
+      this.postContent.title = this.getUpdatePost.title;
+      this.postContent.body = this.getUpdatePost.body;
     },
     middleware: ["userAuthed"],
     data() {
@@ -42,9 +42,7 @@
     },
     methods: {
       ...mapMutations([
-        'setUpdatePostKey', // map `this.setUpdatePostKey()` to `this.$store.commit('setUpdatePostKey')`
-        'setUpdatePostTitle',
-        'setUpdatePostBody'
+        'setUpdatePost', // map `this.setUpdatePostKey()` to `this.$store.commit('setUpdatePostKey')`
       ]),
       updatePost() {
         // create reference to posts collection
@@ -67,20 +65,14 @@
         this.postContent.body = null;
         this.postContent.key = null;
 
-        //clear update data in store
-        this.setUpdatePostKey = null
-        this.setUpdatePostTitle = null
-        this.setUpdatePostBody = null
-
-
+        // clear update data in store
+        this.setUpdatePost({key: null, title: null, body: null})
       }
     },
     computed: {
       ...mapGetters([
         'getPosts',
-        'getUpdatePostKey',
-        'getUpdatePostTitle',
-        'getUpdatePostBody',
+        'getUpdatePost',
         'user'
       ])
     }
