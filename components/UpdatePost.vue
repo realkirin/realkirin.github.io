@@ -25,10 +25,11 @@
 
   export default {
     mounted: function() {
-      console.log(this.getUpdatePost)
-      this.postContent.key = this.getUpdatePost.key;
-      this.postContent.title = this.getUpdatePost.title;
-      this.postContent.body = this.getUpdatePost.body;
+      this.postContent = {
+        key: this.getUpdatePost.key,
+        title: this.getUpdatePost.title,
+        body: this.getUpdatePost.body
+      }
     },
     middleware: ["userAuthed"],
     data() {
@@ -46,24 +47,24 @@
       ]),
       updatePost() {
         // create reference to posts collection
-        let postsDBRef = db.ref('posts')
-        // create reference to each user within posts
-        let userPostRef = postsDBRef.child(this.user.uid)
+        let postsDBRef = db.ref('posts');
 
         // get current Datetime
-        let currDateTime = moment().toISOString()
+        let currDateTime = moment().toISOString();
 
         // get user post you want to update and push content
-        userPostRef.child('/' + this.postContent.key).update({
+        postsDBRef.child('/' + this.postContent.key).update({
           title: this.postContent.title,
           body: this.postContent.body,
           updatedDateTime: currDateTime
-        })
+        });
 
         // clear form data after post
-        this.postContent.title = null;
-        this.postContent.body = null;
-        this.postContent.key = null;
+        this.postContent = {
+          title: null,
+          body: null,
+          key: null
+        }
 
         // clear update data in store
         this.setUpdatePost({key: null, title: null, body: null})

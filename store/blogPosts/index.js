@@ -10,12 +10,14 @@ const state = {
     key: null,
     title: null,
     body: null
-  }
+  },
+  viewPostKey: null
 }
 
 const getters = {
   getPosts: state => state.posts,
-  getUpdatePost: state => state.updatePost // get post key to update post
+  getUpdatePost: state => state.updatePost, // get post key to update post
+  getViewPostKey: state => state.viewPostKey
 }
 
 const mutations = {
@@ -24,13 +26,14 @@ const mutations = {
 
   // expects payload with key, title, and body attributes
   setUpdatePost: function (state, payload) {
-    console.log(payload)
     state.updatePost = {
       key: payload.key,
       title: payload.title,
       body: payload.body
     }
-  }
+  },
+
+  setViewPostKey: (state, key) => state.viewPostKey = key
 }
 
 const actions = {

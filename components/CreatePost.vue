@@ -36,7 +36,7 @@
         // get the current date and time
         let currDateTime = moment().toISOString()
         // push to firebase under the current users posts
-        db.ref('/posts/' + this.user.uid).push({
+        db.ref('posts').push({
           title: this.newPost.title,
           body: this.newPost.body,
           uid: this.user.uid,
@@ -44,6 +44,10 @@
           dateTime: currDateTime,
           comments: []
         })
+
+        // instead of storing all post by each user within post,
+        // store all posts as one, then everytime  a user makes a post,
+        // send post id to users "posts" array.
 
         // clear form data after post
         this.newPost.title = "";
