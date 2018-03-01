@@ -6,6 +6,15 @@
           <v-text-field name="comment" label="Comment" multi-line v-model="comment"></v-text-field>
         </div>
       </div>
+      <v-layout v-for="comment in comments" :key="comment['.key']">
+        <v-divider></v-divider>
+        <v-list-tile>
+          <v-list-tile-content v-html="comment">
+            <!-- <v-list-tile-title v-html="post.title"></v-list-tile-title> -->
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-layout>
+
       <div>
         <v-btn @click.prevent="addNewComment">Add</v-btn>
       </div>
@@ -64,7 +73,3 @@
   }
 
 </script>
-<!--
-when looking at a single post add a comment box,
-the comment will be sent to the current post ID in firebase
--->

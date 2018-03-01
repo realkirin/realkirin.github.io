@@ -45,10 +45,6 @@
           comments: []
         })
 
-        // instead of storing all post by each user within post,
-        // store all posts as one, then everytime  a user makes a post,
-        // send post id to users "posts" array.
-
         // clear form data after post
         this.newPost.title = "";
         this.newPost.body = ""
