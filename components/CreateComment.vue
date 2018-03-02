@@ -3,13 +3,14 @@
     <v-form>
       <div>
         <div>
-          <v-text-field name="comment" label="Comment" multi-line v-model="comment"></v-text-field>
+          <v-text-field name="newComment" label="NewComment" multi-line v-model="newComment.body"></v-text-field>
         </div>
       </div>
       <v-layout v-for="comment in comments" :key="comment['.key']">
         <v-divider></v-divider>
         <v-list-tile>
-          <v-list-tile-content v-html="comment">
+          Posted by {{ comment.userDisplayName }} on {{ comment.dateTime }}
+          <v-list-tile-content v-html="comment.body">
             <!-- <v-list-tile-title v-html="post.title"></v-list-tile-title> -->
           </v-list-tile-content>
         </v-list-tile>
@@ -34,23 +35,38 @@
     middleware: ["userAuthed"],
     data() {
       return {
-        comment: null,
+        newComment: {
+          body: null,
+          uid: null,
+          userDisplayName: null,
+          votes: null,
+          dateTime: null
+        },
         comments: []
       };
     },
     methods: {
       addNewComment() {
         // get the current date and time
-        // let currDateTime = moment().toISOString()
-        // push to firebase under the current users posts
+        let currDateTime = moment().toISOString();
+        this.newComment.dateTime = currDateTime;
 
-        this.comments.push(this.comment);
+        this.newComment.uid = this.user.uid;
+        this.newComment.userDisplayName = this.user.displayName;
+        // push to firebase under the current posts comments
+        this.comments.push(this.newComment);
 
         db.ref('/posts/' + this.getViewPostKey).update({
           comments: this.comments
         })
         // clear form data after post
-        this.comment = null;
+        this.newComment = {
+          body: null,
+          uid: null,
+          userDisplayName: null,
+          votes: null,
+          dateTime: null
+        };
       },
       getExistingComments() {
         for(let each in this.getPosts) {

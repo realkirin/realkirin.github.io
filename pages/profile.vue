@@ -1,32 +1,20 @@
 <template>
   <v-container>
-    <v-layout>
-      <v-flex xs12 sm6 offset-sm3>
-        <v-card>
-          <v-card-title primary-title>
-            <div class="text-md-center" v-if="user">
-              <h4 class="headline mb-0">{{ user.name }}</h4>
-              <h4 class="headline mb-0">{{ user.email }}</h4>
-            </div>
-            <div v-else>
-              <h1>Please sign in.</h1>
-            </div>
-          </v-card-title>
-        </v-card>
-      </v-flex>
-    </v-layout>
+    <app-edit-profile-form></app-edit-profile-form>
+    <app-profile></app-profile>
   </v-container>
 </template>
 
 <script>
+  import Profile from '@/components/Profile'
+  import EditProfileForm from '@/components/EditProfileForm'
+
   export default {
+    components: {
+      appProfile: Profile,
+      appEditProfileForm: EditProfileForm
+    },
     middleware: ["userAuthed"],
-    computed: {
-      // get current user
-      user() {
-        return this.$store.getters.user
-      }
-    }
   }
 
 </script>

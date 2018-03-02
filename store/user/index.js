@@ -3,11 +3,15 @@ import { firebaseMutations, firebaseAction } from 'vuexfire'
 
 export default {
   state: {
-    user: null
+    user: null,
+    userProfileData: null
   },
   mutations: {
     setUser (state, payload) {
       state.user = payload
+    },
+    setUserProfileData (state, payload) {
+      state.userProfileData = payload
     }
   },
   actions: {
