@@ -6,7 +6,8 @@
           <v-text-field name="newComment" label="NewComment" multi-line v-model="newComment.body"></v-text-field>
         </div>
       </div>
-      <v-layout v-for="comment in comments" :key="comment['.key']">
+      <v-layout v-for="comment in getComments" :key="comment['.key']">
+        {{ comment }}
         <v-divider></v-divider>
         <v-list-tile>
           Posted by {{ comment.userDisplayName }} on {{ comment.dateTime }}
@@ -29,9 +30,6 @@
   import { mapGetters } from 'vuex'
 
   export default {
-    mounted: function() {
-      this.getExistingComments();
-    },
     middleware: ["userAuthed"],
     data() {
       return {
@@ -40,7 +38,8 @@
           uid: null,
           userDisplayName: null,
           votes: null,
-          dateTime: null
+          dateTime: null,
+          postKey: null
         },
         comments: []
       };
@@ -53,34 +52,24 @@
 
         this.newComment.uid = this.user.uid;
         this.newComment.userDisplayName = this.user.displayName;
-        // push to firebase under the current posts comments
-        this.comments.push(this.newComment);
+        this.newComment.postKey = this.getViewPostKey;
 
-        db.ref('/posts/' + this.getViewPostKey).update({
-          comments: this.comments
-        })
+        db.ref('comments').push(this.newComment);
+
         // clear form data after post
         this.newComment = {
           body: null,
           uid: null,
           userDisplayName: null,
           votes: null,
-          dateTime: null
+          dateTime: null,
+          postKey: null
         };
       },
-      getExistingComments() {
-        for(let each in this.getPosts) {
-          if(this.getPosts[each]['.key'] === this.getViewPostKey) {
-            let postInfo = this.getPosts[each]
-            if(postInfo.comments) {
-              this.comments = postInfo.comments
-            }
-          }
-        }
-      }
     },
     computed: {
       ...mapGetters([
+        'getComments',
         'getPosts',
         'getViewPostKey',
         'user' // get current user

@@ -6,6 +6,7 @@ import user from '../user'
 
 const state = {
   posts: [],
+  comments: [],
   updatePost: {
     key: null,
     title: null,
@@ -16,6 +17,7 @@ const state = {
 
 const getters = {
   getPosts: state => state.posts,
+  getComments: state => state.comments,
   getUpdatePost: state => state.updatePost, // get post key to update post
   getViewPostKey: state => state.viewPostKey
 }
@@ -23,6 +25,8 @@ const getters = {
 const mutations = {
   // pushes to the states "posts" array
   addPost: (state, posts) => state.posts.push(posts),
+
+  addComment: (state, comments) => state.comments.push(comments),
 
   // expects payload with key, title, and body attributes
   setUpdatePost: function (state, payload) {
@@ -38,10 +42,12 @@ const mutations = {
 
 const actions = {
   // set vuexfire firebase reference
-  setPostsRef: firebaseAction(({bindFirebaseRef }, { ref }) => {
+  setPostsRef: firebaseAction(({ bindFirebaseRef }, { ref }) => {
     bindFirebaseRef('posts', ref)
   }),
-
+  setCommentsRef: firebaseAction(({ bindFirebaseRef }, { ref }) => {
+    bindFirebaseRef('comments', ref)
+  }),
 };
 
 export default {

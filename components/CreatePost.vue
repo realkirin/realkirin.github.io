@@ -21,6 +21,7 @@
 <script>
   import { db } from '../plugins/firebase.js'
   import moment from 'moment'
+
   export default {
     middleware: ["userAuthed"],
     data() {

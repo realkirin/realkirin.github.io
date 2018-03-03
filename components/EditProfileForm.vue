@@ -14,7 +14,9 @@
        so change that in createcoment,
        uid field, created datetime, updated datetime, bio, emailVerified(get from firebase user auth data)
        posts array(contains ids from the posts that the user created)
-       commented on(array of post id keys) -->
+       commented on(array of post id keys)
+       crate comments collections in firebase, for each posts, create keyid to each comment in comments collection
+       -->
 
 </template>
 
