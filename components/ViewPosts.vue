@@ -73,6 +73,7 @@
         // when user clicks edit, it sets the firebase key of the post to UpdatePostKey in the store
         this.setUpdatePost({key: key, title: title, body: body})
       },
+
       viewPost(key) {
         this.setViewPostKey(key);
         this.$router.push('/viewpost')

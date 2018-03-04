@@ -6,6 +6,8 @@
         <v-text-field name="lastName" label="LastName" v-model="userData.lastName"></v-text-field>
         <v-text-field name="age" label="Age" v-model="userData.age"></v-text-field>
         <v-text-field name="bio" label="Bio" v-model="userData.bio"></v-text-field>
+
+        <v-btn @click.prevent="updateProfile">Update</v-btn>
       </v-card>
     </v-flex>
   </v-layout>
@@ -36,6 +38,11 @@
           posts: null,
           comments: null,
         }
+      }
+    },
+    methods: {
+      updateProfile () {
+
       }
     }
   }

@@ -65,6 +65,14 @@
           dateTime: null,
           postKey: null
         };
+
+        // console.log(this.getPosts);
+        // console.log(db.ref('posts/' + this.getViewPostKey))
+
+
+        //db.ref('posts/' + this.getViewPostKey).update({
+        //
+        //})
       },
     },
     computed: {
