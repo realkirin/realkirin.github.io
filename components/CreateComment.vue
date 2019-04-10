@@ -54,7 +54,7 @@
         this.newComment.userDisplayName = this.user.displayName;
         this.newComment.postKey = this.getViewPostKey;
 
-        db.ref('comments').push(this.newComment);
+        db.collection('comments').add(this.newComment);
 
         // clear form data after post
         this.newComment = {

@@ -47,7 +47,7 @@
       ]),
       updatePost() {
         // create reference to posts collection
-        let postsDBRef = db.ref('posts');
+        let postsDBRef = db.collection('posts');
 
         // get current Datetime
         let currDateTime = moment().toISOString();

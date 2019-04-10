@@ -1,12 +1,14 @@
 import {
-  firebaseAction
+  firebaseAction,
+  firebaseMutations
 } from 'vuexfire'
 
 import user from '../user'
 
-const state = {
+const state = () => ({
   posts: [],
   comments: [],
+  users: [],
   updatePost: {
     key: null,
     title: null,
@@ -25,7 +27,7 @@ const state = {
     posts: null,
     comments: null,
   }
-}
+})
 
 const getters = {
   getPosts: state => state.posts,
@@ -36,6 +38,8 @@ const getters = {
 }
 
 const mutations = {
+  ...firebaseMutations,
+
   // pushes to the states "posts" array
   addPost: (state, posts) => state.posts.push(posts),
   addComment: (state, comments) => state.comments.push(comments),
@@ -50,7 +54,7 @@ const mutations = {
     }
   },
   addUserPost: (state, postID) => state.userData.posts.push(postID),
-  addUserCOmment: (state, commentID ) => state.userData.comments.push(commentID)
+  addUserCOmment: (state, commentID ) => state.userData.comments.push(commentID),
 
 
   // expects payload with key, title, and body attributes
@@ -67,15 +71,15 @@ const mutations = {
 
 const actions = {
   // set vuexfire firebase reference
-  setPostsRef: firebaseAction(({ bindFirebaseRef }, { ref }) => {
+  setPostsRef: firebaseAction(({ bindFirebaseRef }, ref) => {
     bindFirebaseRef('posts', ref)
   }),
-  setCommentsRef: firebaseAction(({ bindFirebaseRef }, { ref }) => {
+  setCommentsRef: firebaseAction(({ bindFirebaseRef }, ref) => {
     bindFirebaseRef('comments', ref)
   }),
-  setUsersRef: firebaseAction(({bindFirebaseRef }, {ref} ) => {
+  setUsersRef: firebaseAction(({ bindFirebaseRef }, ref) => {
     bindFirebaseRef('users', ref)
-  })
+  }),
 };
 
 export default {

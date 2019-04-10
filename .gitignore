@@ -8,9 +8,11 @@ npm-debug.log
 .nuxt
 
 # Nuxt generate
-dist
+# dist
 
 *.xml
 *.iml
 
 config.js
+
+kirin-blog-firebase-adminsdk-cwlv3-7cdae3b8a7.json

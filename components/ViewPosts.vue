@@ -66,7 +66,7 @@
       ]),
       removePost(key) {
         // create reference to posts collection
-        let postsDBRef = db.ref('posts')
+        let postsDBRef = db.collection('posts')
         postsDBRef.child(key).remove()
       },
       updatePost(key, title, body){

@@ -37,7 +37,7 @@
         // get the current date and time
         let currDateTime = moment().toISOString()
         // push to firebase under the current users posts
-        db.ref('posts').push({
+        db.collection('posts').add({
           title: this.newPost.title,
           body: this.newPost.body,
           uid: this.user.uid,
